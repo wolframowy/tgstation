@@ -34,36 +34,165 @@
 				"Cyborg"
 			]
 		},
+		
+		"Malfunctioning AI": {
+			"requirements": [
+				70,
+				70,
+				70,
+				70,
+				70,
+				70,
+				70,
+				70,
+				70,
+				70
+			],
+			"weight": 0
+		},
 
 		"Blood Brothers": {
+			"required_candidates": 2,
+			"requirements": [
+				20,
+				20,
+				20,
+				20,
+				20,
+				20,
+				20,
+				10,
+				10,
+				10
+			],
 			"weight": 0
 		},
 
 		"Changelings": {
+			"requirements": [
+				70,
+				60,
+				50,
+				40,
+				30,
+				20,
+				20,
+				10,
+				10,
+				10
+			],
 			"weight": 0
 		},
 
 		"Heretics": {
+			"requirements": [
+				60,
+				60,
+				50,
+				40,
+				30,
+				20,
+				20,
+				10,
+				10,
+				10
+			],
 			"weight": 0
 		},
 
 		"Wizard": {
+			"requirements": [
+				70,
+				60,
+				50,
+				40,
+				30,
+				20,
+				20,
+				10,
+				10,
+				10
+			],
 			"weight": 0
 		},
 
 		"Blood Cult": {
+			"requirements": [
+				50,
+				40,
+				30,
+				20,
+				20,
+				20,
+				20,
+				10,
+				10,
+				10
+			],
+			"required_candidates": 2,
 			"weight": 0
 		},
 
 		"Nuclear Emergency": {
+			"requirements": [
+				70,
+				60,
+				50,
+				40,
+				30,
+				20,
+				20,
+				10,
+				10,
+				10
+			],
+			"required_candidates": 5,
 			"weight": 0
 		},
 
 		"Revolution": {
+			"requirements": [
+				50,
+				50,
+				50,
+				40,
+				40,
+				40,
+				30,
+				30,
+				20,
+				10
+			],
+			"required_candidates": 3,
 			"weight": 0
 		},
 
 		"Families": {
+			"required_candidates": 3,
+			"weight": 0
+		},
+		
+		"Extended": {
+			"weight": 1
+		},
+		
+		"Meteor": {
+			"weight": 0
+		},
+		
+		"Thieves": {
+			"requirements": [
+				8,
+				8,
+				8,
+				8,
+				8,
+				8,
+				8,
+				8,
+				8,
+				8
+			],
 			"weight": 0
 		}
 	},
