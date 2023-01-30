@@ -112,7 +112,7 @@
 	if(anchored)
 		ADD_TRAIT(M, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
 	if(!length(buckled_mobs))
-		RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, .proc/on_set_anchored)
+		RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, PROC_REF(on_set_anchored))
 	M.set_buckled(src)
 	buckled_mobs |= M
 	M.throw_alert(ALERT_BUCKLED, /atom/movable/screen/alert/buckled)
@@ -131,7 +131,7 @@
 	if(.)
 		if(resistance_flags & ON_FIRE) //Sets the mob on fire if you buckle them to a burning atom/movableect
 			M.adjust_fire_stacks(1)
-			M.IgniteMob()
+			M.ignite_mob()
 
 /**
  * Set a mob as unbuckled from src

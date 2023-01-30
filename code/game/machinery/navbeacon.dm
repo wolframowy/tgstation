@@ -7,10 +7,10 @@
 	icon_state = "navbeacon0-f"
 	base_icon_state = "navbeacon"
 	name = "navigation beacon"
-	desc = "A radio beacon used for bot navigation and crew wayfinding."
+	desc = "A radio beacon used for bot navigation."
 	layer = LOW_OBJ_LAYER
 	max_integrity = 500
-	armor = list(MELEE = 70, BULLET = 70, LASER = 70, ENERGY = 70, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
+	armor_type = /datum/armor/machinery_navbeacon
 
 	var/open = FALSE // true if cover is open
 	var/locked = TRUE // true if controls are locked
@@ -18,21 +18,19 @@
 	var/location = "" // location response text
 	var/list/codes // assoc. list of transponder codes
 	var/codes_txt = "" // codes as set on map: "tag1;tag2" or "tag1=value;tag2=value"
-	var/wayfinding = FALSE
 
-	req_one_access = list(ACCESS_ENGINE, ACCESS_ROBOTICS)
+	req_one_access = list(ACCESS_ENGINEERING, ACCESS_ROBOTICS)
+
+/datum/armor/machinery_navbeacon
+	melee = 70
+	bullet = 70
+	laser = 70
+	energy = 70
+	fire = 80
+	acid = 80
 
 /obj/machinery/navbeacon/Initialize(mapload)
 	. = ..()
-
-	if(wayfinding)
-		if(!location)
-			var/obj/machinery/door/airlock/A = locate(/obj/machinery/door/airlock) in loc
-			if(A)
-				location = A.name
-			else
-				location = get_area(src)
-		codes_txt += "wayfinding=[location]"
 
 	set_codes()
 
@@ -44,12 +42,12 @@
 	glob_lists_deregister()
 	return ..()
 
-/obj/machinery/navbeacon/on_changed_z_level(turf/old_turf, turf/new_turf)
+/obj/machinery/navbeacon/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
 	if (GLOB.navbeacons["[old_turf?.z]"])
 		GLOB.navbeacons["[old_turf?.z]"] -= src
 	if (GLOB.navbeacons["[new_turf?.z]"])
 		GLOB.navbeacons["[new_turf?.z]"] += src
-	..()
+	return ..()
 
 // set the transponder codes assoc list from codes_txt
 /obj/machinery/navbeacon/proc/set_codes()
@@ -74,7 +72,6 @@
 		GLOB.navbeacons["[z]"] -= src //Remove from beacon list, if in one.
 	GLOB.deliverybeacons -= src
 	GLOB.deliverybeacontags -= location
-	GLOB.wayfindingbeacons -= src
 
 /obj/machinery/navbeacon/proc/glob_lists_register(init=FALSE)
 	if(!init)
@@ -88,8 +85,6 @@
 	if(codes["delivery"])
 		GLOB.deliverybeacons += src
 		GLOB.deliverybeacontags += location
-	if(codes["wayfinding"])
-		GLOB.wayfindingbeacons += src
 
 // update the icon_state
 /obj/machinery/navbeacon/update_icon_state()
@@ -109,18 +104,19 @@
 	if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
 		return // prevent intraction when T-scanner revealed
 
-	else if (istype(I, /obj/item/card/id)||istype(I, /obj/item/pda))
+	if (isidcard(I) || istype(I, /obj/item/modular_computer/pda))
 		if(open)
-			if (src.allowed(user))
-				src.locked = !src.locked
-				to_chat(user, span_notice("Controls are now [src.locked ? "locked" : "unlocked"]."))
+			if (allowed(user))
+				locked = !locked
+				to_chat(user, span_notice("Controls are now [locked ? "locked" : "unlocked"]."))
 			else
 				to_chat(user, span_danger("Access denied."))
 			updateDialog()
 		else
 			to_chat(user, span_warning("You must open the cover first!"))
-	else
-		return ..()
+		return
+
+	return ..()
 
 /obj/machinery/navbeacon/attack_ai(mob/user)
 	interact(user, 1)
@@ -229,137 +225,3 @@ Transponder Codes:<UL>"}
 			glob_lists_register()
 
 			updateDialog()
-
-/obj/machinery/navbeacon/wayfinding
-	wayfinding = TRUE
-
-/* Defining these here instead of relying on map edits because it makes it easier to place them */
-
-//Command
-/obj/machinery/navbeacon/wayfinding/bridge
-	location = "Bridge"
-
-/obj/machinery/navbeacon/wayfinding/hop
-	location = "Head of Personnel's Office"
-
-/obj/machinery/navbeacon/wayfinding/vault
-	location = "Vault"
-
-/obj/machinery/navbeacon/wayfinding/teleporter
-	location = "Teleporter"
-
-/obj/machinery/navbeacon/wayfinding/gateway
-	location = "Gateway"
-
-/obj/machinery/navbeacon/wayfinding/eva
-	location = "EVA Storage"
-
-/obj/machinery/navbeacon/wayfinding/aiupload
-	location = "AI Upload"
-
-/obj/machinery/navbeacon/wayfinding/minisat_access_ai
-	location = "AI MiniSat Access"
-
-/obj/machinery/navbeacon/wayfinding/minisat_access_tcomms
-	location = "Telecomms MiniSat Access"
-
-/obj/machinery/navbeacon/wayfinding/minisat_access_tcomms_ai
-	location = "AI and Telecomms MiniSat Access"
-
-/obj/machinery/navbeacon/wayfinding/tcomms
-	location = "Telecommunications"
-
-//Departments
-/obj/machinery/navbeacon/wayfinding/sec
-	location = "Security"
-
-/obj/machinery/navbeacon/wayfinding/det
-	location = "Detective's Office"
-
-/obj/machinery/navbeacon/wayfinding/research
-	location = "Research"
-
-/obj/machinery/navbeacon/wayfinding/engineering
-	location = "Engineering"
-
-/obj/machinery/navbeacon/wayfinding/techstorage
-	location = "Technical Storage"
-
-/obj/machinery/navbeacon/wayfinding/atmos
-	location = "Atmospherics"
-
-/obj/machinery/navbeacon/wayfinding/med
-	location = "Medical"
-
-/obj/machinery/navbeacon/wayfinding/chemfactory
-	location = "Chemistry Factory"
-
-/obj/machinery/navbeacon/wayfinding/cargo
-	location = "Cargo"
-
-//Common areas
-/obj/machinery/navbeacon/wayfinding/bar
-	location = "Bar"
-
-/obj/machinery/navbeacon/wayfinding/dorms
-	location = "Dormitories"
-
-/obj/machinery/navbeacon/wayfinding/court
-	location = "Courtroom"
-
-/obj/machinery/navbeacon/wayfinding/tools
-	location = "Tool Storage"
-
-/obj/machinery/navbeacon/wayfinding/library
-	location = "Library"
-
-/obj/machinery/navbeacon/wayfinding/chapel
-	location = "Chapel"
-
-/obj/machinery/navbeacon/wayfinding/minisat_access_chapel_library
-	location = "Chapel and Library MiniSat Access"
-
-//Service
-/obj/machinery/navbeacon/wayfinding/kitchen
-	location = "Kitchen"
-
-/obj/machinery/navbeacon/wayfinding/hydro
-	location = "Hydroponics"
-
-/obj/machinery/navbeacon/wayfinding/janitor
-	location = "Janitor's Closet"
-
-/obj/machinery/navbeacon/wayfinding/lawyer
-	location = "Lawyer's Office"
-
-//Shuttle docks
-/obj/machinery/navbeacon/wayfinding/dockarrival
-	location = "Arrival Shuttle Dock"
-
-/obj/machinery/navbeacon/wayfinding/dockesc
-	location = "Escape Shuttle Dock"
-
-/obj/machinery/navbeacon/wayfinding/dockescpod
-	location = "Escape Pod Dock"
-
-/obj/machinery/navbeacon/wayfinding/dockescpod1
-	location = "Escape Pod 1 Dock"
-
-/obj/machinery/navbeacon/wayfinding/dockescpod2
-	location = "Escape Pod 2 Dock"
-
-/obj/machinery/navbeacon/wayfinding/dockescpod3
-	location = "Escape Pod 3 Dock"
-
-/obj/machinery/navbeacon/wayfinding/dockescpod4
-	location = "Escape Pod 4 Dock"
-
-/obj/machinery/navbeacon/wayfinding/dockaux
-	location = "Auxiliary Dock"
-
-//Maint
-/obj/machinery/navbeacon/wayfinding/incinerator
-	location = "Incinerator"
-
-/obj/machinery/navbeacon/wayfinding/disposals
-	location = "Disposals"

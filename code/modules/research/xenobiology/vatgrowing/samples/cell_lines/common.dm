@@ -26,7 +26,7 @@
 
 	virus_suspectibility = 2
 	growth_rate = VAT_GROWTH_RATE
-	resulting_atoms = list(/mob/living/simple_animal/mouse = 2)
+	resulting_atoms = list(/mob/living/basic/mouse = 2)
 
 /datum/micro_organism/cell_line/chicken //basic cell line designed as a good source of protein and eggyolk.
 	desc = "Galliform skin cells."
@@ -128,7 +128,7 @@
 		/datum/reagent/consumable/coco = -2)
 
 	virus_suspectibility = 1
-	resulting_atoms = list(/mob/living/simple_animal/pet/dog/corgi = 1)
+	resulting_atoms = list(/mob/living/basic/pet/dog/corgi = 1)
 
 /datum/micro_organism/cell_line/pug
 	desc = "Squat canid cells"
@@ -146,7 +146,7 @@
 		/datum/reagent/consumable/coco = -2)
 
 	virus_suspectibility = 3
-	resulting_atoms = list(/mob/living/simple_animal/pet/dog/pug = 1)
+	resulting_atoms = list(/mob/living/basic/pet/dog/pug = 1)
 
 /datum/micro_organism/cell_line/bear //bears can't really compete directly with more powerful creatures, so i made it possible to grow them real fast.
 	desc = "Ursine cells"
@@ -187,7 +187,7 @@
 		/datum/reagent/oxygen = -3)
 
 	virus_suspectibility = 2
-	resulting_atoms = list(/mob/living/simple_animal/hostile/carp = 1)
+	resulting_atoms = list(/mob/living/basic/carp = 1)
 
 /datum/micro_organism/cell_line/megacarp
 	desc = "Cartilaginous cyprinid cells"
@@ -208,7 +208,7 @@
 		/datum/reagent/oxygen = -3)
 
 	virus_suspectibility = 1
-	resulting_atoms = list(/mob/living/simple_animal/hostile/carp/megacarp = 1)
+	resulting_atoms = list(/mob/living/basic/carp/mega = 1)
 
 /datum/micro_organism/cell_line/snake
 	desc = "Ophidic cells"
@@ -304,7 +304,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1)
 
 	suppressive_reagents = list(
-		/datum/reagent/toxin/minttoxin = -3,
+		/datum/reagent/consumable/mintextract = -3,
 		/datum/reagent/consumable/frostoil = -2,
 		/datum/reagent/consumable/ice = -1)
 
@@ -357,6 +357,48 @@
 
 	virus_suspectibility = 0
 	resulting_atoms = list(/mob/living/basic/cockroach = 5)
+
+/datum/micro_organism/cell_line/glockroach
+	desc = "Gattodeoid anthropod cells"
+	required_reagents = list(
+		/datum/reagent/consumable/nutriment/protein,
+		/datum/reagent/drug/maint/powder,
+		/datum/reagent/iron)
+
+	supplementary_reagents = list(
+		/datum/reagent/gunpowder = 6,
+		/datum/reagent/drug/maint/tar = 4,
+		/datum/reagent/yuck = 2,
+		/datum/reagent/growthserum = 2)
+
+	suppressive_reagents = list(
+		/datum/reagent/toxin/pestkiller = -2,
+		/datum/reagent/consumable/coffee = -3, //a quick google search said roaches don't like coffee grounds, and I needed a different suppressive reagent
+		/datum/reagent/consumable/ethanol/bug_spray = -4)
+
+	virus_suspectibility = 0
+	resulting_atoms = list(/mob/living/basic/cockroach/glockroach = 2)
+
+/datum/micro_organism/cell_line/hauberoach
+	desc = "Hattodeoid anthropod cells"
+	required_reagents = list(
+		/datum/reagent/consumable/nutriment/protein,
+		/datum/reagent/consumable/ethanol/beer,
+		/datum/reagent/iron)
+
+	supplementary_reagents = list(
+		/datum/reagent/gunpowder = 6,
+		/datum/reagent/medicine/pen_acid = 4, //Prussian Blue is an antidote for radioactive thallium poisoning, among other things. The pickelhaube was worn by Prussian/German officers. You can tell I'm running out of ideas here.
+		/datum/reagent/yuck = 2,
+		/datum/reagent/blood = 2)
+
+	suppressive_reagents = list(
+		/datum/reagent/toxin/pestkiller = -2,
+		/datum/reagent/consumable/coffee = -3,
+		/datum/reagent/consumable/ethanol/cognac = -4)
+
+	virus_suspectibility = 0
+	resulting_atoms = list(/mob/living/basic/cockroach/hauberoach = 2)
 
 /datum/micro_organism/cell_line/pine
 	desc = "Coniferous plant cells"
@@ -432,7 +474,7 @@
 	resulting_atoms = list(/mob/living/simple_animal/hostile/netherworld = 1)
 
 /datum/micro_organism/cell_line/netherworld/succeed_growing(obj/machinery/plumbing/growing_vat/vat)
-	var/random_result = pick(typesof(/mob/living/simple_animal/hostile/netherworld)) //i looked myself, pretty much all of them are reasonably strong and somewhat on the same level. except migo is the jackpot and the blank body is whiff.
+	var/random_result = pick(typesof(/mob/living/simple_animal/hostile/netherworld) - /mob/living/simple_animal/hostile/netherworld/statue) //i looked myself, pretty much all of them are reasonably strong and somewhat on the same level. except migo is the jackpot and the blank body is whiff.
 	resulting_atoms = list()
 	resulting_atoms[random_result] = 1
 	return ..()
@@ -488,7 +530,7 @@
 
 	suppressive_reagents = list(
 		/datum/reagent/consumable/clownstears = -8,
-		/datum/reagent/toxin/minttoxin = -6,
+		/datum/reagent/consumable/mintextract = -6,
 		/datum/reagent/consumable/ethanol/silencer = -3,
 		/datum/reagent/consumable/ethanol/fernet = -3,
 		/datum/reagent/toxin/lipolicide = -3,
@@ -539,7 +581,7 @@
 		/datum/reagent/toxin = -1)
 
 	virus_suspectibility = 0.5
-	resulting_atoms = list(/mob/living/simple_animal/hostile/retaliate/frog = 1)
+	resulting_atoms = list(/mob/living/basic/frog = 1)
 
 /datum/micro_organism/cell_line/walking_mushroom
 	desc = "motile fungal hyphae"
